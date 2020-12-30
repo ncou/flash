@@ -187,7 +187,7 @@ final class FlashBag implements \Countable, \IteratorAggregate, \JsonSerializabl
         # Add the message.
         $this->updated = true;
 
-        $levelTags = explode(' ', 'XXXXX');
+        $levelTags = explode(' ', 'XXXXX'); // TODO : créer une méthode qui utilisera le fichier de config pour récupérer les tags associés au level du message !!!!
 
         $this->messages[] = new Message($level, $message, (array) $extraTags, $levelTags);
     }
@@ -197,6 +197,7 @@ final class FlashBag implements \Countable, \IteratorAggregate, \JsonSerializabl
      *
      * @return \ArrayIterator
      */
+    // TODO : virer l'iterator et la méthode count, il faudra créer une méthode '->flashes(): array' qui retournera $this->messages !!! tout simplement, et ca évitera que depuis twig on accéde aux méthode des cette classe !!!!
     public function getIterator()
     {
         // This flag indicate the messages has been accessed (so it can be cleared/removed later).
@@ -215,6 +216,7 @@ final class FlashBag implements \Countable, \IteratorAggregate, \JsonSerializabl
         return count($this->messages);
     }
 
+    // TODO : virer cette méthode et passer la property de class $this->messages en "public" ???
     public function jsonSerialize()
     {
         return $this->messages;

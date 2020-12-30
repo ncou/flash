@@ -64,17 +64,14 @@ final class Message implements JsonSerializable
         return $this->message;
     }
 
-    /**
-     * It's normal the property $this->levelTags is missing in the json serialization
-     * because this data is from the FlashBag configuration, not related to the Message data.
-     */
+
     public function jsonSerialize()
     {
         return [
             $this->level,
             $this->message,
             $this->extraTags,
-            //$this->levelTags,
+            $this->levelTags,
         ];
     }
 
