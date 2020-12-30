@@ -51,8 +51,23 @@ DEFAULT_LEVELS = {
 
 // TODO : créer une facade nommée "Flash" + créer un FalshManager qui ira chercher l'objet FlashMessage directement dans la request (cf ce qui se fait pour la Session) + créer un provider qui va binder la string FlashMessage::class avec l'instance présente dans la request (cf ce qui se fait dans le package Session).
 
-class FlashBag implements \Countable, \IteratorAggregate, \JsonSerializable
+final class FlashBag implements \Countable, \IteratorAggregate, \JsonSerializable
 {
+    public const DEBUG = 10;
+    public const INFO = 20;
+    public const SUCCESS = 30;
+    public const WARNING = 40;
+    public const ERROR = 50;
+
+    // TODO : renommer directement en LEVELS (attention il faudra modifier l'extension TWIG !!!!)
+    public const DEFAULT_LEVELS = [
+        'DEBUG'   => self::DEBUG,
+        'INFO'    => self::INFO,
+        'SUCCESS' => self::SUCCESS,
+        'WARNING' => self::WARNING,
+        'ERROR'   => self::ERROR,
+    ];
+
     private $messages; // TODO : renommer en "queuedMessages"
 
     // TODO : passer ces 2 variables en "public" !!! et virer les méthode hasBeenUsed / hasBeenModified !!!
@@ -97,12 +112,73 @@ class FlashBag implements \Countable, \IteratorAggregate, \JsonSerializable
     }
 
     /**
+     * Shortcut method to add a 'debug' flash message.
+     *
+     * @param string $message
+     * @param string|array $extraTags
+     */
+    public function debug(string $message, $extraTags = [])
+    {
+        $this->add(self::DEBUG, $message, $extraTags);
+    }
+
+    /**
+     * Shortcut method to add a 'info' flash message.
+     *
+     * @param string $message
+     * @param string|array $extraTags
+     */
+    public function info(string $message, $extraTags = [])
+    {
+        $this->add(self::INFO, $message, $extraTags);
+    }
+
+    /**
+     * Shortcut method to add a 'success' flash message.
+     *
+     * @param string $message
+     * @param string|array $extraTags
+     */
+    public function success(string $message, $extraTags = [])
+    {
+        $this->add(self::SUCCESS, $message, $extraTags);
+    }
+
+    /**
+     * Shortcut method to add a 'warning' flash message.
+     *
+     * @param string $message
+     * @param string|array $extraTags
+     */
+    public function warning(string $message, $extraTags = [])
+    {
+        $this->add(self::WARNING, $message, $extraTags);
+    }
+
+    /**
+     * Shortcut method to add a 'error' flash message.
+     *
+     * @param string $message
+     * @param string|array $extraTags
+     */
+    public function error(string $message, $extraTags = [])
+    {
+        $this->add(self::ERROR, $message, $extraTags);
+    }
+
+    /**
+     * @param int $level
+     * @param string $message
+     * @param string|array $extraTags
+     *
      * Queue a message to be stored.
      * The message is only queued if it contained something and its level is
      * not less than the recording level ('self.level').
      */
     // TODO : permettre de passer un "mixed" comme valeur pour la paramétre $message, ne pas limiter le type à une string ????
-    public function add(string $message)
+    // TODO : vérifier que le integer du $level est bien une valeur du tableau const DEFAULT_LEVEL ??? ou alors laisser le choix à l'utilisateur de mettre ce qu'il veut !!!
+    // TODO : renommer la méthode en message()
+    public function add(int $level, string $message, $extraTags = [])
     {
         # Check that the message level is not less than the recording level.
         //level = int(level)
@@ -111,10 +187,9 @@ class FlashBag implements \Countable, \IteratorAggregate, \JsonSerializable
         # Add the message.
         $this->updated = true;
 
-        //message = Message(level, message, extra_tags=extra_tags)
+        $levelTags = explode(' ', 'XXXXX');
 
-        //$this->messages[] = $message;
-        $this->messages[] = new Message($message, 40, (array) 'classA');
+        $this->messages[] = new Message($level, $message, (array) $extraTags, $levelTags);
     }
 
     /**

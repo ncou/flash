@@ -8,22 +8,21 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use JsonSerializable;
 
-// TODO : passer la classe en final et virer les protected !!!
-class Message implements \JsonSerializable // \ArrayAccess
+final class Message implements JsonSerializable
 {
-    private $message;
     private $level;
+    private $message;
     private $extraTags;
+    private $levelTags;
 
-    //private $extra_tags; // TODO : renommer en extra ou extra_tags ????
-
-    // TODO : attention il faut que $extra_tags soit un array de string !!!!
-    public function __construct(string $message, int $level, array $extraTags)
+    public function __construct(int $level, string $message, array $extraTags = [], array $levelTags = [])
     {
-        $this->message = $message;
         $this->level = $level;
+        $this->message = $message;
         $this->extraTags = $extraTags;
+        $this->levelTags = $levelTags;
     }
 
     /**
@@ -32,12 +31,7 @@ class Message implements \JsonSerializable // \ArrayAccess
      */
     public function __isset(string $property): bool
     {
-        // TODO : faire directement un 'return in_array(xxx);'
-        if (in_array($property, ['level', 'level_tags', 'extra_tags', 'tags'])) {
-            return true;
-        }
-
-        return false;
+        return in_array($property, ['level', 'extra_tags', 'level_tags', 'tags']);
     }
 
     /**
@@ -50,18 +44,16 @@ class Message implements \JsonSerializable // \ArrayAccess
             return $this->level;
         }
 
-        if ($property === 'level_tags') {
-            //return ;
-            return ' class-info';
-        }
-
         if ($property === 'extra_tags') {
             return implode(' ', $this->extraTags);
         }
 
+        if ($property === 'level_tags') {
+            return implode(' ', $this->levelTags);
+        }
+
         if ($property === 'tags') {
-            //return '' . implode(' ', $class);
-            return ' class-info, class1, class2';
+            return implode(' ', array_merge($this->extraTags, $this->levelTags));
         }
 
         // The other private properties can't be accessed !
@@ -72,12 +64,17 @@ class Message implements \JsonSerializable // \ArrayAccess
         return $this->message;
     }
 
+    /**
+     * It's normal the property $this->levelTags is missing in the json serialization
+     * because this data is from the FlashBag configuration, not related to the Message data.
+     */
     public function jsonSerialize()
     {
         return [
-            $this->message,
             $this->level,
+            $this->message,
             $this->extraTags,
+            //$this->levelTags,
         ];
     }
 

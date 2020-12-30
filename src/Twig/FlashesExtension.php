@@ -11,6 +11,7 @@ use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
 use Twig\TwigFunction;
 use Chiron\Flash\FlashBagScope;
+use Chiron\Flash\FlashBag;
 
 // Exemple n°1
 /*
@@ -63,7 +64,7 @@ final class FlashesExtension extends AbstractExtension implements GlobalsInterfa
     {
         // TODO : utiliser une constante public dans la classe FlasMessages::class pour récupérer ce tableau, ca évitera de l'ajouter en dur ici !!!!
         return [
-            'DEFAULT_MESSAGE_LEVELS' => ['DEBUG' => 10, 'INFO' => 20, 'SUCCESS' => 25, 'WARNING' => 30, 'ERROR' => 40],
+            'DEFAULT_MESSAGE_LEVELS' => FlashBag::DEFAULT_LEVELS //['DEBUG' => 10, 'INFO' => 20, 'SUCCESS' => 25, 'WARNING' => 30, 'ERROR' => 40],
         ];
     }
 
@@ -78,7 +79,7 @@ final class FlashesExtension extends AbstractExtension implements GlobalsInterfa
         ];
     }
 
-    private function getFlashBag(): iterable
+    private function getFlashBag(): FlashBag//iterable
     {
         //die(var_dump($this->flash->getFlashBag()));
         return $this->flash->getFlashBag();//->getMessages();

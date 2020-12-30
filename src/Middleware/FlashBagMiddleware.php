@@ -15,6 +15,7 @@ use Chiron\Security\Config\SecurityConfig;
 use Chiron\Security\Signer;
 use Chiron\Security\Support\Random;
 use Chiron\Security\Exception\BadSignatureException;
+use Chiron\Flash\FlashBagFactory;
 
 //https://docs.djangoproject.com/en/3.1/ref/contrib/messages/
 
@@ -30,6 +31,9 @@ class FlashBagMiddleware implements MiddlewareInterface
      */
     public const ATTRIBUTE = 'flashBag'; // TODO : utiliser la valeur '__flashBag__' ???
 
+    /** @var FlashBagFactory */
+    private $flashBagFactory;
+
     /** @var CookieFactory */
     private $cookieFactory;
 
@@ -37,11 +41,13 @@ class FlashBagMiddleware implements MiddlewareInterface
     private $signer;
 
     /**
-     * @param CookieFactory $cookieFactory
-     * @param Signer        $signer
+     * @param FlashBagFactory $flashBagFactory
+     * @param CookieFactory   $cookieFactory
+     * @param Signer          $signer
      */
-    public function __construct(CookieFactory $cookieFactory, Signer $signer)
+    public function __construct(FlashBagFactory $flashBagFactory, CookieFactory $cookieFactory, Signer $signer)
     {
+        $this->flashBagFactory = $flashBagFactory;
         $this->cookieFactory = $cookieFactory;
         // Use the class name as salt to have a different signatures in different application module.
         $this->signer = $signer->withSalt(self::class);
@@ -71,7 +77,8 @@ class FlashBagMiddleware implements MiddlewareInterface
         $messages = $this->getMessagesFromCookie($request->getCookieParams());
 
         //return new FlashBag($messages ?? []);
-        return FlashBag::create($messages ?? []);
+        //return FlashBag::create($messages ?? []);
+        return $this->flashBagFactory->create($messages ?? []);
     }
 
     /**

@@ -1,0 +1,12 @@
+<?php
+
+return [
+    'level' => Chiron\Flash\FlashBag::INFO,
+    'tags' => [
+        Chiron\Flash\FlashBag::DEBUG   => 'debug',
+        Chiron\Flash\FlashBag::INFO    => 'info',
+        Chiron\Flash\FlashBag::SUCCESS => 'success',
+        Chiron\Flash\FlashBag::WARNING => 'warning',
+        Chiron\Flash\FlashBag::ERROR   => 'error',
+    ]
+];
