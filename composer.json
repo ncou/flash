@@ -31,5 +31,10 @@
         "phplint": "phplint --ansi",
         "check-style": "phpcs src tests",
         "fix-style": "phpcbf src tests"
+    },
+    "extra": {
+        "chiron": {
+            "providers": ["Chiron\\Flash\\Provider\\FlashBagServiceProvider"]
+        }
     }
 }
