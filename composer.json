@@ -35,7 +35,8 @@
     },
     "extra": {
         "chiron": {
-            "providers": ["Chiron\\Flash\\Provider\\FlashBagServiceProvider"]
+            "providers": ["Chiron\\Flash\\Provider\\FlashBagServiceProvider"],
+            "bootloaders": ["Chiron\\Flash\\Bootloader\\PublishFlashBootloader"]
         }
     }
 }
