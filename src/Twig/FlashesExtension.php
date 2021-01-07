@@ -38,7 +38,7 @@ use Chiron\Flash\FlashBag;
 {% endif %}
 */
 
-
+// TODO : déplacer cette classe dans le package chiron/twig-bidge !!!!
 
 /**
  * Read the flash messages.
@@ -62,9 +62,8 @@ final class FlashesExtension extends AbstractExtension implements GlobalsInterfa
 
     public function getGlobals(): array
     {
-        // TODO : utiliser une constante public dans la classe FlasMessages::class pour récupérer ce tableau, ca évitera de l'ajouter en dur ici !!!!
         return [
-            'DEFAULT_MESSAGE_LEVELS' => FlashBag::DEFAULT_LEVELS //['DEBUG' => 10, 'INFO' => 20, 'SUCCESS' => 25, 'WARNING' => 30, 'ERROR' => 40],
+            'DEFAULT_MESSAGE_LEVELS' => FlashBag::DEFAULT_LEVELS
         ];
     }
 
