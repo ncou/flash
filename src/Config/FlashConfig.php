@@ -17,7 +17,7 @@ final class FlashConfig extends AbstractInjectableConfig
     {
         return Expect::structure([
             'level' => Expect::int()->default(FlashBag::INFO),
-            'tags' => Expect::list()->default([
+            'tags' => Expect::array()->default([
                 FlashBag::DEBUG   => 'debug',
                 FlashBag::INFO    => 'info',
                 FlashBag::SUCCESS => 'success',

@@ -71,7 +71,7 @@ final class FlashBag implements \Countable, \IteratorAggregate, \JsonSerializabl
     private $messages; // TODO : renommer en "queuedMessages"
 
     // TODO : passer ces 2 variables en "public" !!! et virer les méthode hasBeenUsed / hasBeenModified !!!
-    private $used = false;
+    private $used = false; // TODO : renommer en $consumed
     private $updated = false; // TODO : renomment en "modified" ???
 
     // TODO : créer une méthode static "createFromJson" qui se chargerai de faire un new self et d'alimenter le $messages[] avec un tableau de classe Message::class initailisées depuis du json en entrée. Eventuellement passer le constructeur en private pour utiliser uniquement la méthode static createFromJson pour initialiser cette classe !!!!
