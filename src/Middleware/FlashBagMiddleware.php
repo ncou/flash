@@ -13,7 +13,7 @@ use Chiron\Cookies\Cookie;
 use Chiron\Cookies\CookieFactory;
 use Chiron\Security\Config\SecurityConfig;
 use Chiron\Security\Signer;
-use Chiron\Security\Support\Random;
+use Chiron\Support\Random;
 use Chiron\Security\Exception\BadSignatureException;
 use Chiron\Flash\FlashBagFactory;
 
